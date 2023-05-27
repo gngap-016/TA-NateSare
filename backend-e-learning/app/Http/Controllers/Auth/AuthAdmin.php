@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 class AuthAdmin extends Controller
 {
     public function login(Request $request) {
-        $validateData = $request->validate([
+        $request->validate([
             'username' => 'required',
             'password' => 'required'
         ]);
@@ -24,6 +24,15 @@ class AuthAdmin extends Controller
             ]);
         }
 
-        return $user->createToken('user_token_' . $user->username)->plainTextToken;
+        $token = $user->createToken('user_token_' . $user->username)->plainTextToken;
+
+        return response()->json([
+            'status' => 'success',
+            'bearer_token' => $token,
+        ]);
+    }
+
+    public function logout(Request $request) {
+        $request->user()->currentAccessToken()->delete();
     }
 }

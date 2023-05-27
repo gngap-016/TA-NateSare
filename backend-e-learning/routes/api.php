@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthAdmin;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,8 +29,20 @@ Route::get('/posts/published', [PostController::class, 'publishedPosts']);
 Route::get('/posts/drafted', [PostController::class, 'draftedPosts']);
 Route::get('/posts/{post:slug}', [PostController::class, 'show']);
 
-Route::post('/posts', [PostController::class, 'store'])->middleware(['auth:sanctum']);
-Route::put('/posts/{post:slug}', [PostController::class, 'update'])->middleware(['auth:sanctum']);
-Route::delete('/posts/{post:slug}', [PostController::class, 'destroy'])->middleware(['auth:sanctum']);
+Route::get('/categories', [CategoryController::class, 'index']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/posts/check-slug', [PostController::class, 'checkSlug']);
+    Route::post('/posts', [PostController::class, 'store']);
+    Route::put('/posts/{post:slug}', [PostController::class, 'update']);
+    Route::delete('/posts/{post:slug}', [PostController::class, 'destroy']);
+
+    Route::post('/comment', [CommentController::class, 'store']);
+
+    Route::get('/categories/{category:slug}', [CategoryController::class, 'show']);
+    Route::post('/categories', [CategoryController::class, 'store']);
+    Route::put('/categories/{category:slug}', [CategoryController::class, 'update']);
+    Route::delete('/categories/{category:slug}', [CategoryController::class, 'destroy']);
+});
 
 Route::post('login', [AuthAdmin::class, 'login']);
