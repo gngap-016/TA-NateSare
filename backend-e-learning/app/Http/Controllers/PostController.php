@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\PostResource;
+use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
@@ -14,6 +15,9 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class PostController extends Controller
 {
+    // ----------------------------------------------------------
+    // GET ALL MATERIES
+    // ----------------------------------------------------------
     public function allPosts()
     {
         $posts = Post::all();
@@ -24,9 +28,12 @@ class PostController extends Controller
         ]);
     }
 
+    // ----------------------------------------------------------
+    // GET ONLY FREE MATERIES
+    // ----------------------------------------------------------
     public function freePosts()
     {
-        $posts = Post::where('status', 'free')->get();
+        $posts = Post::where('publish', 1)->where('status', 'free')->get();
 
         return response()->json([
             'status' => 'success',
@@ -34,9 +41,12 @@ class PostController extends Controller
         ]);
     }
 
+    // ----------------------------------------------------------
+    // GET ONLY PAID MATERIES
+    // ----------------------------------------------------------
     public function paidPosts()
     {
-        $posts = Post::where('status', 'paid')->get();
+        $posts = Post::where('publish', 1)->where('status', 'paid')->get();
 
         return response()->json([
             'status' => 'success',
@@ -44,6 +54,9 @@ class PostController extends Controller
         ]);
     }
 
+    // ----------------------------------------------------------
+    // GET ONLY PUBLISHED MATERIES
+    // ----------------------------------------------------------
     public function publishedPosts()
     {
         $posts = Post::where('publish', 1)->get();
@@ -54,7 +67,9 @@ class PostController extends Controller
         ]);
     }
 
-    
+    // ----------------------------------------------------------
+    // GET ONLY DRAFT MATERIES
+    // ----------------------------------------------------------
     public function draftedPosts()
     {
         $posts = Post::where('publish', 0)->get();
@@ -65,6 +80,9 @@ class PostController extends Controller
         ]);
     }
 
+    // ----------------------------------------------------------
+    // GET DETAIL MATERY
+    // ----------------------------------------------------------
     public function show(Post $post)
     {
         $post = Post::firstWhere('slug', $post->slug);
@@ -75,6 +93,9 @@ class PostController extends Controller
         ]);
     }
 
+    // ----------------------------------------------------------
+    // CREATE MATERY
+    // ----------------------------------------------------------
     public function store(Request $request)
     {
         // ----------------------------------------------------------
@@ -155,6 +176,9 @@ class PostController extends Controller
         ]);
     }
 
+    // ----------------------------------------------------------
+    // UPDATE MATERY
+    // ----------------------------------------------------------
     public function update(Request $request, Post $post) {
 
         // ----------------------------------------------------------
@@ -235,6 +259,10 @@ class PostController extends Controller
 
         if($request->post_slug != $post->slug) {
             $updateRules['slug'] = $validateData['post_slug'];
+
+            Comment::where('post_slug', $post->slug)->update([
+                'post_slug' => $validateData['post_slug'],
+            ]);
         }
 
         if($request->file('post_image')) {
@@ -259,6 +287,9 @@ class PostController extends Controller
         ]);
     }
 
+    // ----------------------------------------------------------
+    // DELETE MATERY
+    // ----------------------------------------------------------
     public function destroy(Post $post) {
         // ----------------------------------------------------------
         // DELETE POST IMAGE IF EXISTS
@@ -288,6 +319,9 @@ class PostController extends Controller
     }
 
 
+    // ----------------------------------------------------------
+    // CHECK SLUG FOR CREATE/UPDATE MATERY
+    // ----------------------------------------------------------
     public function checkSlug(Request $request) {
         $slug = SlugService::createSlug(Post::class, 'slug', $request->post_title);
 

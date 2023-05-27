@@ -53,10 +53,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Comment::create([
-            'slug' => 'komentar-pertama',
             'body' => 'Isi dari komentar pertama',
             'user_id' => 1,
-            'post_id' => 1,
+            'post_slug' => 'postingan-pertama',
         ]);
     }
 }

@@ -16,10 +16,10 @@ class CommentResource extends JsonResource
     {
         // return parent::toArray($request);
         return [
-            'comment_slug' => $this->slug,
+            'id' => $this->id,
             'comment_content' => $this->body,
-            'commentator' => $this->whenLoaded('users')->name,
-            'post_comment' => $this->whenLoaded('posts')->slug,
+            'user_comment' => $this->whenLoaded('user')->name,
+            'post_comment' => $this->whenLoaded('post')->slug,
             'comment_at' => $this->created_at->diffForHumans(),
         ];
     }
