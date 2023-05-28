@@ -11,12 +11,14 @@ class Comment extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    protected $with = ['user:id,name'];
  
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
-    public function post(): BelongsTo {
-        return $this->belongsTo(Post::class, 'post_slug', 'slug');
-    }
+    // public function post(): BelongsTo {
+    //     return $this->belongsTo(Post::class, 'post_slug', 'slug');
+    // }
 }

@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthAdmin;
+use App\Http\Controllers\Auth\Authentication;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::post('/login', [Authentication::class, 'login']);
+Route::post('/register', [Authentication::class, 'register']);
+
 Route::get('/posts', [PostController::class, 'allPosts']);
 Route::get('/posts/free', [PostController::class, 'freePosts']);
 Route::get('/posts/paid', [PostController::class, 'paidPosts']);
@@ -38,11 +42,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/posts/{post:slug}', [PostController::class, 'destroy']);
 
     Route::post('/comment', [CommentController::class, 'store']);
+    Route::put('/comment/{comment}', [CommentController::class, 'update']);
+    Route::delete('/comment/{comment}', [CommentController::class, 'destroy']);
 
     Route::get('/categories/{category:slug}', [CategoryController::class, 'show']);
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{category:slug}', [CategoryController::class, 'update']);
     Route::delete('/categories/{category:slug}', [CategoryController::class, 'destroy']);
-});
 
-Route::post('login', [AuthAdmin::class, 'login']);
+    Route::get('/users', [UserController::class, 'allUsers']);
+    Route::get('/users/admin', [UserController::class, 'adminUsers']);
+    Route::get('/users/teacher', [UserController::class, 'teacherUsers']);
+    Route::get('/users/student', [UserController::class, 'studentUsers']);
+    Route::get('/users/{user:username}', [UserController::class, 'show']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::put('/users/{user:username}', [UserController::class, 'update']);
+    Route::delete('/users/{user:username}', [UserController::class, 'destroy']);
+    Route::put('/users/password-reset/{user:username}', [UserController::class, 'resetPassword']);
+    
+    Route::get('/logout', [Authentication::class, 'logout']);
+});
