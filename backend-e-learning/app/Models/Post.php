@@ -13,7 +13,7 @@ class Post extends Model
 
     protected $guarded = ['id'];
 
-    protected $with = ['author', 'comments', 'category'];
+    protected $with = ['author', 'comments:id,user_id,post_slug,body,created_at', 'category'];
 
     public function getRouteKeyName(): string {
         return 'slug';
