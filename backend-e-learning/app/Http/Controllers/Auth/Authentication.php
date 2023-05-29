@@ -50,19 +50,21 @@ class Authentication extends Controller
         $user = User::firstWhere('username', $request->username);
 
         if(!$user || !Hash::check($request->password, $user->password)) {
-            throw ValidationException::withMessages([
-                'failed' => ['Wrong Username or Password!'],
+            return response()->json([
+                'status' => 'failed',
+                'message' => 'Wrong username or password!',
             ]);
         }
 
         $token = $user->createToken('user_token_' . $user->username)->plainTextToken;
 
         User::where('id', $user->id)->update([
-            'api_token' => 'Bearer ' . $token
+            'api_token' => $token
         ]);
 
         return response()->json([
             'status' => 'success',
+            'username' => $user->username,
             'bearer_token' => $token,
         ]);
     }
