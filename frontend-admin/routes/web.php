@@ -3,7 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\Dashboard\Admin\DashboardController;
 use App\Http\Controllers\Dashboard\Admin\PostController;
-use App\Http\Controllers\StudentController;
+use App\Http\Controllers\Dashboard\Admin\StudentController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
