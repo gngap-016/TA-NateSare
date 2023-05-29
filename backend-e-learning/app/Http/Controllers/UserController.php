@@ -22,7 +22,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => UserResource::collection($users),
-        ], http_response_code());
+        ]);
     }
 
     public function adminUsers() {
@@ -31,7 +31,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => UserResource::collection($users),
-        ], http_response_code());
+        ]);
     }
 
     public function teacherUsers() {
@@ -40,7 +40,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => UserResource::collection($users),
-        ], http_response_code());
+        ]);
     }
 
     public function studentUsers() {
@@ -49,7 +49,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'data' => UserResource::collection($users),
-        ], http_response_code());
+        ]);
     }
 
     /**
@@ -96,7 +96,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'New user has been added!'
-        ], http_response_code());
+        ]);
     }
 
     /**
@@ -106,10 +106,10 @@ class UserController extends Controller
     {
         $user = User::firstWhere('username', $user->username);
 
-        return response([
+        return response()->json([
             'status' => 'success',
             'data' => new UserResource($user),
-        ], http_response_code());
+        ]);
     }
 
     /**
@@ -176,7 +176,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'User has been updated!'
-        ], http_response_code());
+        ]);
     }
 
     /**
@@ -197,7 +197,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'User has been deleted!'
-        ], http_response_code());
+        ]);
     }
 
     public function resetPassword(User $user) {
@@ -211,6 +211,6 @@ class UserController extends Controller
             'status' => 'success',
             'message' => 'User password has been reset!',
             'newPassword' => $newPassword
-        ], http_response_code());
+        ]);
     }
 }
