@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticationController;
 use App\Http\Controllers\Dashboard\Admin\DashboardController;
 use App\Http\Controllers\Dashboard\Admin\PostController;
+use App\Http\Controllers\Dashboard\Admin\StudentController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,10 @@ Route::get('/logout', [AuthenticationController::class, 'logout'])->middleware('
 
 Route::middleware('is_login')->group(function () {
     Route::get('/admin', [DashboardController::class, 'index']);
+
+    Route::get('/admin/materies', [PostController::class, 'index']);
+
+    Route::get('/admin/users/students', [StudentController::class, 'index']);
 });
 
 Route::get('/check', function() {

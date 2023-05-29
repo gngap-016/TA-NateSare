@@ -17,7 +17,7 @@ class DashboardController extends Controller
     }
 
     public function index() {
-        $user = $this->user->getBody();
+        $user = json_decode($this->user);
 
         $data = [
             "title" => "Dashboard",
