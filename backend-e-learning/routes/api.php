@@ -36,7 +36,7 @@ Route::get('/posts/{post:slug}', [PostController::class, 'show']);
 Route::get('/categories', [CategoryController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/posts/check-slug', [PostController::class, 'checkSlug']);
+    Route::get('/posts/check-slug/{parameter}', [PostController::class, 'checkSlug']);
     Route::post('/posts', [PostController::class, 'store']);
     Route::put('/posts/{post:slug}', [PostController::class, 'update']);
     Route::delete('/posts/{post:slug}', [PostController::class, 'destroy']);
@@ -45,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/comment/{comment}', [CommentController::class, 'update']);
     Route::delete('/comment/{comment}', [CommentController::class, 'destroy']);
 
+    Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/{category:slug}', [CategoryController::class, 'show']);
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{category:slug}', [CategoryController::class, 'update']);

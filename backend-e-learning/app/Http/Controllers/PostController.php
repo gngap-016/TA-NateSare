@@ -322,8 +322,8 @@ class PostController extends Controller
     // ----------------------------------------------------------
     // CHECK SLUG FOR CREATE/UPDATE MATERY
     // ----------------------------------------------------------
-    public function checkSlug(Request $request) {
-        $slug = SlugService::createSlug(Post::class, 'slug', $request->post_title);
+    public function checkSlug(String $parameter) {
+        $slug = SlugService::createSlug(Post::class, 'slug', $parameter);
 
         return response()->json(['post_slug' => $slug]);
     }
