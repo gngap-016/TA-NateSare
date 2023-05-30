@@ -14,6 +14,13 @@
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
   @endif
+  
+  @if (session()->has('failed'))
+  <div class="alert alert-danger alert-dismissible show fade">
+    <i class="bi bi-check-circle"></i> {{ session('failed') }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  @endif
 
   <div class="card">
     <div class="card-header">
