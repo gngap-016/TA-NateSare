@@ -29,6 +29,7 @@ Route::middleware('is_login')->group(function () {
     Route::get('/admin', [DashboardController::class, 'index']);
 
     Route::get('/admin/materies', [PostController::class, 'index']);
+
     Route::get('/admin/materies/create', [PostController::class, 'create']);
     Route::get('/admin/materies/check-slug', [PostController::class, 'checkSlug']);
     Route::get('/admin/materies/{post_slug}', [PostController::class, 'show']);
@@ -39,7 +40,7 @@ Route::middleware('is_login')->group(function () {
     Route::delete('/admin/materies/{parameter}', [PostController::class, 'destroy']);
     
     Route::get('/admin/categories', [CategoryController::class, 'index']);
-
+  
     Route::get('/admin/users/students', [StudentController::class, 'index']);
 });
 
