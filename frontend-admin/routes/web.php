@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticationController;
+use App\Http\Controllers\Dashboard\Admin\CategoryController;
 use App\Http\Controllers\Dashboard\Admin\DashboardController;
 use App\Http\Controllers\Dashboard\Admin\PostController;
 use App\Http\Controllers\Dashboard\Admin\StudentController;
@@ -33,9 +34,12 @@ Route::middleware('is_login')->group(function () {
     Route::get('/admin/materies/check-slug', [PostController::class, 'checkSlug']);
     Route::get('/admin/materies/{post_slug}', [PostController::class, 'show']);
     Route::get('/admin/materies/edit/{parameter}', [PostController::class, 'edit']);
+    Route::get('/admin/my-materies', [PostController::class, 'myMateries']);
     Route::post('/admin/materies', [PostController::class, 'store']);
     Route::put('/admin/materies/{parameter}', [PostController::class, 'update']);
     Route::delete('/admin/materies/{parameter}', [PostController::class, 'destroy']);
+    
+    Route::get('/admin/categories', [CategoryController::class, 'index']);
   
     Route::get('/admin/users/students', [StudentController::class, 'index']);
 });

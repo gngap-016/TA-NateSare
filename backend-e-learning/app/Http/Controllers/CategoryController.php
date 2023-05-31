@@ -119,8 +119,8 @@ class CategoryController extends Controller
     // ----------------------------------------------------------
     // CHECK SLUG FOR CREATE/UPDATE CATEGORY
     // ----------------------------------------------------------
-    public function checkSlug(Request $request) {
-        $slug = SlugService::createSlug(Post::class, 'slug', $request->category_name);
+    public function checkSlug(String $parameter) {
+        $slug = SlugService::createSlug(Category::class, 'slug', $parameter);
 
         return response()->json(['category_slug' => $slug]);
     }

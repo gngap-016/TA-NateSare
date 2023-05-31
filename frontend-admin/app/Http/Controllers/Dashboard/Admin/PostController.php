@@ -34,6 +34,20 @@ class PostController extends Controller
         return view('dashboard.materies.all', $data);
     }
 
+    public function myMateries() {
+        $user = json_decode($this->user);
+
+        $response = Http::accept('application/json')->get(env('SERVER_API') . 'my-posts/' . $_COOKIE['my_key']);
+
+        $data = [
+            "title" => "My Materies",
+            "user" => $user->data,
+            "materies" => json_decode($response)->data,
+        ];
+        
+        return view('dashboard.materies.all', $data);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -100,7 +114,7 @@ class PostController extends Controller
                 ]);
         }
 
-        return redirect('/admin/materies')->with('success', 'New matery has been added!');
+        return redirect('/admin/my-materies')->with('success', 'New matery has been added!');
     }
 
     /**
@@ -156,26 +170,28 @@ class PostController extends Controller
         ];
 
         $body = [
+            '_method' => 'PUT',
             'post_slug' => $request->post_slug,
             'post_title' => $request->post_title,
             'post_category' => $request->post_category,
             'post_content' => $request->post_content,
             'post_status' => $request->post_status,
             'post_publish' => $request->post_publish,
-            'old_post_status' => $request->old_post_status,
+            'old_post_publish' => $request->old_post_publish,
         ];
 
         if($request->file('post_image')) {
             $body['old_post_image'] = $request->old_post_image;
+
             $image = fopen($request->file('post_image'), 'r');
             
             $update = Http::withHeaders($header)
             ->attach(
                 'post_image', $image
             )
-            ->put(env('SERVER_API') . 'posts/' . $parameter, $body);
+            ->post(env('SERVER_API') . 'posts/' . $parameter, $body);
         } else {
-            $update = Http::withHeaders($header)->put(env('SERVER_API') . 'posts/' . $parameter, $body);
+            $update = Http::withHeaders($header)->post(env('SERVER_API') . 'posts/' . $parameter, $body);
         }
 
         if(!$update->ok()) {
@@ -192,7 +208,7 @@ class PostController extends Controller
                 ]);
         }
 
-        return redirect('/admin/materies')->with('success', 'Matery has been updated!');
+        return redirect('/admin/my-materies')->with('success', 'Matery has been updated!');
     }
 
     /**

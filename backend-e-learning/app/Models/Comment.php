@@ -12,7 +12,7 @@ class Comment extends Model
 
     protected $guarded = ['id'];
 
-    protected $with = ['user:id,name'];
+    protected $with = ['user:id,name,image'];
  
     public function user(): BelongsTo {
         return $this->belongsTo(User::class, 'user_id', 'id');

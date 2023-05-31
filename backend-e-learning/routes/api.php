@@ -27,6 +27,7 @@ Route::post('/login', [Authentication::class, 'login']);
 Route::post('/register', [Authentication::class, 'register']);
 
 Route::get('/posts', [PostController::class, 'allPosts']);
+Route::get('/my-posts/{parameter}', [PostController::class, 'myPosts']);
 Route::get('/posts/free', [PostController::class, 'freePosts']);
 Route::get('/posts/paid', [PostController::class, 'paidPosts']);
 Route::get('/posts/published', [PostController::class, 'publishedPosts']);
@@ -45,8 +46,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/comment/{comment}', [CommentController::class, 'update']);
     Route::delete('/comment/{comment}', [CommentController::class, 'destroy']);
 
-    Route::get('/categories', [CategoryController::class, 'index']);
+    // Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/categories/{category:slug}', [CategoryController::class, 'show']);
+    Route::get('/categories/check-slug/{parameter}', [CategoryController::class, 'checkSlug']);
     Route::post('/categories', [CategoryController::class, 'store']);
     Route::put('/categories/{category:slug}', [CategoryController::class, 'update']);
     Route::delete('/categories/{category:slug}', [CategoryController::class, 'destroy']);

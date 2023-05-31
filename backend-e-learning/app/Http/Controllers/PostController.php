@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\PostResource;
 use App\Models\Comment;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,21 @@ class PostController extends Controller
     // ----------------------------------------------------------
     public function allPosts()
     {
-        $posts = Post::all();
+        $posts = Post::latest()->get();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => PostResource::collection($posts),
+        ]);
+    }
+
+    // ----------------------------------------------------------
+    // GET ALL MATERIES BY AUTHOR
+    // ----------------------------------------------------------
+    public function myPosts(String $parameter)
+    {
+        $user = User::firstWhere('username', $parameter);
+        $posts = Post::latest()->where('author_id', $user->id)->get();
 
         return response()->json([
             'status' => 'success',
@@ -33,7 +48,7 @@ class PostController extends Controller
     // ----------------------------------------------------------
     public function freePosts()
     {
-        $posts = Post::where('publish', 1)->where('status', 'free')->get();
+        $posts = Post::latest()->where('publish', 1)->where('status', 'free')->get();
 
         return response()->json([
             'status' => 'success',
@@ -46,7 +61,7 @@ class PostController extends Controller
     // ----------------------------------------------------------
     public function paidPosts()
     {
-        $posts = Post::where('publish', 1)->where('status', 'paid')->get();
+        $posts = Post::latest()->where('publish', 1)->where('status', 'paid')->get();
 
         return response()->json([
             'status' => 'success',
@@ -59,7 +74,7 @@ class PostController extends Controller
     // ----------------------------------------------------------
     public function publishedPosts()
     {
-        $posts = Post::where('publish', 1)->get();
+        $posts = Post::latest()->where('publish', 1)->get();
 
         return response()->json([
             'status' => 'success',
@@ -72,7 +87,7 @@ class PostController extends Controller
     // ----------------------------------------------------------
     public function draftedPosts()
     {
-        $posts = Post::where('publish', 0)->get();
+        $posts = Post::latest()->where('publish', 0)->get();
 
         return response()->json([
             'status' => 'success',
@@ -181,6 +196,8 @@ class PostController extends Controller
     // ----------------------------------------------------------
     public function update(Request $request, Post $post) {
 
+        // return $request->all();
+
         // ----------------------------------------------------------
         // VALIDATION RULES
         // ----------------------------------------------------------
@@ -208,37 +225,37 @@ class PostController extends Controller
             $validateData['post_image'] = $request->file('post_image')->store('post/cover');
         }
 
-        $storageImageContent = "post/content/".$request->post_slug;
-        Storage::deleteDirectory($storageImageContent);
-        Storage::makeDirectory($storageImageContent);
+        // $storageImageContent = "post/content/".$request->post_slug;
+        // Storage::deleteDirectory($storageImageContent);
+        // Storage::makeDirectory($storageImageContent);
 
-        $dom = new \DOMDocument();
-        libxml_use_internal_errors(true);
-        $dom->loadHTML($request->post_content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NOIMPLIED);
-        libxml_clear_errors();
-        $contentImages = $dom->getElementsByTagName('img');
-        foreach ($contentImages as $contentImage) {
-            $src = $contentImage->getAttribute('src');
-            if(preg_match('/data:image/', $src)) {
-                preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
-                $mimetype = $groups['mime'];
-                $fileNameContent = uniqid();
-                $fileNameContentRandom = substr(md5($fileNameContent), 6, 6).'_'.time();
-                $filePath = ("storage/$storageImageContent/$fileNameContentRandom.$mimetype");
-                $image = Image::make($src)
-                            ->encode($mimetype, 100)
-                            ->save(public_path($filePath));
-                $new_src = asset($filePath);
-                $contentImage->removeAttribute('src');
-                $contentImage->setAttribute('src', $new_src);
-                $contentImage->setAttribute('class', 'img-responsive');
-            }
-        }
+        // $dom = new \DOMDocument();
+        // libxml_use_internal_errors(true);
+        // $dom->loadHTML($request->post_content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NOIMPLIED);
+        // libxml_clear_errors();
+        // $contentImages = $dom->getElementsByTagName('img');
+        // foreach ($contentImages as $contentImage) {
+        //     $src = $contentImage->getAttribute('src');
+        //     if(preg_match('/data:image/', $src)) {
+        //         preg_match('/data:image\/(?<mime>.*?)\;/', $src, $groups);
+        //         $mimetype = $groups['mime'];
+        //         $fileNameContent = uniqid();
+        //         $fileNameContentRandom = substr(md5($fileNameContent), 6, 6).'_'.time();
+        //         $filePath = ("storage/$storageImageContent/$fileNameContentRandom.$mimetype");
+        //         $image = Image::make($src)
+        //                     ->encode($mimetype, 100)
+        //                     ->save(public_path($filePath));
+        //         $new_src = asset($filePath);
+        //         $contentImage->removeAttribute('src');
+        //         $contentImage->setAttribute('src', $new_src);
+        //         $contentImage->setAttribute('class', 'img-responsive');
+        //     }
+        // }
 
         $validateData['post_author'] = Auth::user()->id;
 
         $validateData['post_excerpt'] = Str::limit(strip_tags($request->post_content), 160);
-        $validateData['post_content'] = $dom->saveHTML();
+        // $validateData['post_content'] = $dom->saveHTML();
 
         if($request->post_publish == 1 && $request->old_post_publish == 0) {
             $validateData['post_published_at'] = \Carbon\Carbon::now()->toDateTimeString();

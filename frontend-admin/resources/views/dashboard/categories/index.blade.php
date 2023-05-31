@@ -26,8 +26,8 @@
     <div class="card-header">
       <div class="row justify-content-between">
         <h4 class="card-title col-10">{{ $title }}</h4>
-        <a href="/admin/materies/create" class="col-2 btn btn-primary">
-          <i class="fa-solid fa-plus"></i> Add Matery
+        <a href="/admin/categories/create" class="col-2 btn btn-primary">
+          <i class="fa-solid fa-plus"></i> Add Category
         </a>
       </div>
     </div>
@@ -36,34 +36,25 @@
         <thead>
           <tr>
             <th>No</th>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Category</th>
-            <th>Status</th>
-            <th>Publish</th>
-            <th>Action</th>
+            <th>Slug</th>
+            <th>Name</th>
+            <th class="text-center">Action</th>
           </tr>
         </thead>
         <tbody>
-          @foreach ($materies as $matery)
+          @foreach ($categories as $category)
           <tr>
             <td>{{ $loop->iteration }}</td>
-            {{-- <td>
-              <img src="{{ asset('storage/' . $post->image) }}" class="img-thumbnail" alt="{{ $post->title }}" style="max-height: 80px">
-            </td> --}}
-            <td>{{ $matery->post_title }}</td>
-            <td>{{ $matery->post_author }}</td>
-            <td>{{ $matery->post_category }}</td>
-            <td>{!! ($matery->post_status == 'free') ? '<span class="badge bg-success">Free</span>' : '<span class="badge bg-danger">Paid</span>' !!}</td>
-            <td>{!! ($matery->post_publish == 1) ? '<span class="badge bg-primary">Published</span>' : '<span class="badge bg-secondary">Draft</span>' !!}</td>
+            <td>{{ $category->category_slug }}</td>
+            <td>{{ $category->category_name }}</td>
             <td class="text-center">
-              <a href="/admin/materies/{{ $matery->post_slug }}" class="btn btn-info btn-sm">
+              {{-- <a href="/admin/categories/{{ $category->category_slug }}" class="btn btn-info btn-sm">
                 <i class="fa-solid fa-eye"></i>
-              </a>
-              <a href="/admin/materies/edit/{{ $matery->post_slug }}" class="btn btn-warning btn-sm">
+              </a> --}}
+              <a href="/admin/categories/edit/{{ $category->category_slug }}" class="btn btn-warning btn-sm">
                 <i class="fa-solid fa-pencil"></i>
               </a>
-              <button class="btn btn-danger btn-sm" onclick="deleteData('{{ $matery->post_slug }}', '{{ $matery->post_title }}')">
+              <button class="btn btn-danger btn-sm" onclick="deleteData('{{ $category->category_slug }}', '{{ $category->category_name }}')">
                 <i class="fa-solid fa-trash"></i>
               </button>
             </td>
@@ -86,7 +77,7 @@
       event.preventDefault();
       Swal.fire({
         title: 'Are You Sure?',
-        html: " Matery <b>" + name + "</b> will be deleted!",
+        html: " Category <b>" + name + "</b> will be deleted!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#be0000',
@@ -94,7 +85,7 @@
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.isConfirmed) {
-          const url = '{{ url("/admin/materies") }}/' + parameter;
+          const url = '{{ url("/admin/categories") }}/' + parameter;
           fetch(url, {
             method: "DELETE",
             headers: {
@@ -106,7 +97,7 @@
             if(result.status == 'success') {
               Swal.fire(
                 'Deleted!',
-                'Matery ' + name + ' has been deleted!',
+                'Category ' + name + ' has been deleted!',
                 'success'
               )
               .then(result => {
