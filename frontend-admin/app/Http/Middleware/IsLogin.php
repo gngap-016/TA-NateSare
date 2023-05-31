@@ -23,7 +23,11 @@ class IsLogin
             ])->get(env('SERVER_API') . 'users/' . $_COOKIE['my_key']);
 
             if(json_decode($user)->status == 'success') {
-                return $next($request);
+                if(json_decode($user)->data->user_level == 'admin' || json_decode($user)->data->user_level == 'teacher') {
+                    return $next($request);
+                }
+
+                abort(403);
             }
         }
 

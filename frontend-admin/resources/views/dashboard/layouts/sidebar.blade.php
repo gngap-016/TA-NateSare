@@ -85,7 +85,7 @@
 
         <li class="sidebar-title">Manage Matery</li>
 
-        <li class="sidebar-item {{ (Request::is('admin/materies*')) ? 'active' : '' }} has-sub">
+        <li class="sidebar-item {{ (Request::is('admin/materies*') || Request::is('admin/my-materies*')) ? 'active' : '' }} has-sub">
           <a href="#" class="sidebar-link">
             <i class="fa-solid fa-newspaper"></i>
             <span>Materies</span>
@@ -97,12 +97,27 @@
                 >Add Matery</a>
             </li>
 
+            @if ($user->user_level == 'admin')
             <li class="submenu-item {{ Request::is('admin/materies') ? 'active' : '' }}">
               <a href="/admin/materies" class="submenu-link"
                 >All Materies</a>
             </li>
+            @endif
+
+            <li class="submenu-item {{ Request::is('admin/my-materies') ? 'active' : '' }}">
+              <a href="/admin/my-materies" class="submenu-link"
+                >My Materies</a>
+            </li>
 
           </ul>
+        </li>
+
+        @if ($user->user_level == 'admin')
+        <li class="sidebar-item {{ (Request::is('admin/categories*')) ? 'active' : '' }}">
+          <a href="/admin/categories" class="sidebar-link">
+            <i class="fa-solid fa-gauge"></i>
+            <span>Categories</span>
+          </a>
         </li>
 
         <li class="sidebar-title">Manage Users</li>
@@ -131,6 +146,15 @@
 
           </ul>
         </li>
+        @endif
+
+        <hr>
+        <li class="sidebar-item">
+          <a href="/logout" class="sidebar-link">
+          <i class="fa-solid fa-gauge"></i>
+          <span>Logout</span>
+        </a>
+      </li>
 
       </ul>
     </div>

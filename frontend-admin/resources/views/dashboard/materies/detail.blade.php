@@ -12,7 +12,7 @@
     <div class="card-header">
       <div class="d-flex justify-content-between">
         <div>
-          <a href="/admin/materies" class="btn btn-secondary">
+          <a href="/admin/my-materies" class="btn btn-secondary">
             <i class="fa-solid fa-arrow-left"></i> Back to Materies
           </a>
         </div>
@@ -46,6 +46,40 @@
       <div class="text-dark">
         {!! $matery->post_content !!}
       </div>
+
+      <div class="divider">
+        <div class="divider-text">Comments</div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover table-lg">
+          {{-- <thead>
+            <tr>
+              <th>Name</th>
+              <th>Comment</th>
+            </tr>
+          </thead> --}}
+          <tbody>
+            @foreach ($matery->post_comments as $comment)
+              <tr>
+                <td class="col-3">
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-md">
+                      <img src="{{ env('SERVER_URL') . 'storage/' . $comment->user->image }}" />
+                    </div>
+                    <p class="font-bold ms-3 mb-0">{{ $comment->user->name }}</p>
+                  </div>
+                </td>
+                <td class="col-auto">
+                  <span class="text-secondary" style="font-size: 14px">{{ \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}</span>
+                  <p class="mb-0">
+                    {!! $comment->body !!}
+                  </p>
+                </td>
+              </tr>
+            @endforeach
+            
+          </tbody>
+        </table>
     </div>
   </div>
 @endsection

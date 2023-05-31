@@ -92,7 +92,7 @@
 
         <fieldset class="form-group">
           <label for="post_publish">Publish</label>
-          <input type="hidden" name="old_post_status" value="{{ $matery->post_publish }}">
+          <input type="hidden" name="old_post_publish" value="{{ $matery->post_publish }}">
           <select class="form-select" name="post_publish">
             <option value="0" {{ old('post_publish', $matery->post_publish) == 0 ? 'selected' : '' }}>Drafted</option>
             <option value="1" {{ old('post_publish', $matery->post_publish) == 1 ? 'selected' : '' }}>Published</option>
