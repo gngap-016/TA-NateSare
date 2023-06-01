@@ -40,7 +40,12 @@ Route::middleware('is_login')->group(function () {
     Route::delete('/admin/materies/{parameter}', [PostController::class, 'destroy']);
     
     Route::get('/admin/categories', [CategoryController::class, 'index']);
-  
+    Route::get('/admin/categories/create', [CategoryController::class, 'create']);
+    Route::get('/admin/categories/edit/{parameter}', [CategoryController::class, 'edit']);
+    Route::get('/admin/categories/check-slug', [CategoryController::class, 'checkSlug']);
+    Route::post('/admin/categories', [CategoryController::class, 'store']);
+    Route::put('/admin/categories/{parameter}', [CategoryController::class, 'update']);
+
     Route::get('/admin/users/students', [StudentController::class, 'index']);
 });
 
