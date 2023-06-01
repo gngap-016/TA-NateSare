@@ -29,6 +29,7 @@ Route::middleware('is_login')->group(function () {
     Route::get('/admin', [DashboardController::class, 'index']);
 
     Route::get('/admin/materies', [PostController::class, 'index']);
+
     Route::get('/admin/materies/create', [PostController::class, 'create']);
     Route::get('/admin/materies/check-slug', [PostController::class, 'checkSlug']);
     Route::get('/admin/materies/{post_slug}', [PostController::class, 'show']);
@@ -40,8 +41,10 @@ Route::middleware('is_login')->group(function () {
     
     Route::get('/admin/categories', [CategoryController::class, 'index']);
     Route::get('/admin/categories/create', [CategoryController::class, 'create']);
+    Route::get('/admin/categories/edit/{parameter}', [CategoryController::class, 'edit']);
     Route::get('/admin/categories/check-slug', [CategoryController::class, 'checkSlug']);
     Route::post('/admin/categories', [CategoryController::class, 'store']);
+    Route::put('/admin/categories/{parameter}', [CategoryController::class, 'update']);
 
     Route::get('/admin/users/students', [StudentController::class, 'index']);
 });
