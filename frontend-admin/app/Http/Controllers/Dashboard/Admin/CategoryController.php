@@ -71,6 +71,66 @@ class CategoryController extends Controller
         return redirect('/admin/categories')->with('success', 'New matery has been added!');
     }
 
+    public function edit(String $parameter)
+    {
+        $user = json_decode($this->user);
+
+        $header = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $_COOKIE['my_token'],
+        ];
+        
+        $response = Http::withHeaders($header)->get(env('SERVER_API') . 'categories/' . $parameter);
+
+        $data = [
+            "title" => "Edit Categories",
+            "user" => $user->data,
+            "category" => json_decode($response)->data
+        ];
+        
+        return view('dashboard.categories.edit', $data);
+    }
+
+    public function update(Request $request, String $parameter) {
+        $header = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $_COOKIE['my_token'],
+        ];
+
+        $body = [
+            'category_slug' => $request->category_slug,
+            'category_name' => $request->category_name,
+        ];
+        
+        $store = Http::withHeaders($header)->put(env('SERVER_API') . 'categories/' . $parameter, $body);
+
+        if(!$store->ok()) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    "category_slug" => (isset(json_decode($store)->errors->category_slug)) ? json_decode($store)->errors->category_slug : null,
+                    "category_name" => (isset(json_decode($store)->errors->category_name)) ? json_decode($store)->errors->category_name : null,
+                ]);
+        }
+
+        return redirect('/admin/categories')->with('success', 'Matery has been updated!');
+    }
+
+    public function destroy(String $parameter) {
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $_COOKIE['my_token'],
+        ])->delete(env('SERVER_API') . 'categories/' . $parameter);
+
+        if(!$response->ok()) {
+            return back()->with('failed', 'Delete matery failed!');
+        }
+
+        return response([
+            "status" => "success"
+        ], http_response_code());
+    }
+
     public function checkSlug(Request $request) {
         $response = Http::withHeaders([
             'Accept' => 'application/json',
