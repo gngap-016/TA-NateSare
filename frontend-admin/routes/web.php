@@ -45,6 +45,7 @@ Route::middleware('is_login')->group(function () {
     Route::get('/admin/categories/check-slug', [CategoryController::class, 'checkSlug']);
     Route::post('/admin/categories', [CategoryController::class, 'store']);
     Route::put('/admin/categories/{parameter}', [CategoryController::class, 'update']);
+    Route::delete('/admin/categories/{parameter}', [CategoryController::class, 'destroy']);
 
     Route::get('/admin/users/students', [StudentController::class, 'index']);
 });
