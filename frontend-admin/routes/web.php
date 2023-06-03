@@ -48,6 +48,12 @@ Route::middleware('is_login')->group(function () {
     Route::delete('/admin/categories/{parameter}', [CategoryController::class, 'destroy']);
 
     Route::get('/admin/users/students', [StudentController::class, 'index']);
+    Route::get('/admin/users/students/create', [StudentController::class, 'create']);
+    Route::get('/admin/users/students/edit/{parameter}', [StudentController::class, 'edit']);
+    Route::post('/admin/users/students', [StudentController::class, 'store']);
+    Route::put('/admin/users/students/reset-password/{parameter}', [StudentController::class, 'resetPassword']);
+    Route::put('/admin/users/students/{parameter}', [StudentController::class, 'update']);
+    Route::delete('/admin/users/students/{parameter}', [StudentController::class, 'destroy']);
 });
 
 Route::get('/check', function() {

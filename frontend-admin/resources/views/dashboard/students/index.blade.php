@@ -29,35 +29,34 @@
         <thead>
           <tr>
             <th>No</th>
-            {{-- <th>Image</th> --}}
+            <th>Image</th>
             <th>Username</th>
             <th>Name</th>
             <th>Email</th>
             <th>Subscribe</th>
-            <th>Action</th>
+            <th class="text-center">Action</th>
           </tr>
         </thead>
         <tbody>
-          @foreach ($users as $user)
+          @foreach ($students as $student)
           <tr>
             <td>{{ $loop->iteration }}</td>
-            {{-- <td>
-              <img src="{{ asset('storage/' . $post->image) }}" class="img-thumbnail" alt="{{ $post->title }}" style="max-height: 80px">
-            </td> --}}
-            {{-- <td>{{ $user->user_image }}</td> --}}
-            <td>{{ $user->user_username }}</td>
-            <td>{{ $user->user_name }}</td>
-            <td>{{ $user->user_email }}</td>
-            <td>{!! ($user->user_paid_status == 1) ? '<span class="badge bg-success">Subscribe</span>' : '<span class="badge bg-danger">Unsubscribe</span>' !!}</td>
+            <td>
+              <img src="{{ env('SERVER_URL') . 'storage/' . $student->user_image }}" class="img-thumbnail" alt="{{ $student->user_name }}" style="max-height: 80px">
+            </td>
+            <td>{{ $student->user_username }}</td>
+            <td>{{ $student->user_name }}</td>
+            <td>{{ $student->user_email }}</td>
+            <td>{!! ($student->user_paid_status == 1) ? '<span class="badge bg-success">Subscribe</span>' : '<span class="badge bg-danger">Unsubscribe</span>' !!}</td>
             <td class="text-center">
-              <a href="/admin/users/students/{{ $user->user_username }}" class="btn btn-info btn-sm">
-                <i class="fa-solid fa-eye"></i>
-              </a>
-              <a href="/admin/users/students/edit/{{ $user->user_username }}" class="btn btn-warning btn-sm">
+              <a href="/admin/users/students/edit/{{ $student->user_username }}" class="btn btn-warning btn-sm">
                 <i class="fa-solid fa-pencil"></i>
               </a>
-              <button class="btn btn-danger btn-sm" onclick="deleteData('{{ $user->user_username }}', '{{ $user->user_name }}')">
+              <button class="btn btn-danger btn-sm" onclick="deleteData('{{ $student->user_username }}', '{{ $student->user_name }}')">
                 <i class="fa-solid fa-trash"></i>
+              </button>
+              <button class="btn btn-secondary btn-sm" onclick="resetPassword('{{ $student->user_username }}', '{{ $student->user_name }}')">
+                <i class="fa-solid fa-unlock-keyhole"></i> Reset Password
               </button>
             </td>
           </tr>
@@ -107,6 +106,40 @@
                   location.reload();
                 }
               })
+            }
+          })
+        }
+      })
+    }
+
+    // RESET PASSWORD
+    function resetPassword(parameter, name) {
+      event.preventDefault();
+      Swal.fire({
+        title: 'Reset Password <b>' + name + '</b> ?',
+        html: '<p class="text-danger">Replace immediately after you logged in!</p>',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#be0000',
+        cancelButtonColor: '#8d8d8d',
+        confirmButtonText: 'Yes, reset it!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const url = '{{ url("/admin/users/students/reset-password") }}/' + parameter;
+          fetch(url, {
+            method: "PUT",
+            headers: {
+              'X-CSRF-Token' : document.querySelector('meta[name="csrf-token"]').content
+            }
+          })
+          .then(response => response.json())
+          .then(result => {
+            if(result.status == 'success') {
+              Swal.fire(
+                'Success!',
+                'New ' + name +' password is "<b>' + result.newPassword + '</b>" <br> <p class="text-danger">Copy this password before you close this modal!</p>',
+                'success'
+              )
             }
           })
         }
