@@ -79,7 +79,16 @@
         <li class="sidebar-item {{ (Request::is('admin')) ? 'active' : '' }}">
             <a href="/admin" class="sidebar-link">
             <i class="fa-solid fa-gauge"></i>
-            <span>Papan Utama</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="sidebar-title">Profile</li>
+
+        <li class="sidebar-item {{ (Request::is('admin/my-profile*')) ? 'active' : '' }}">
+          <a href="/admin/my-profile" class="sidebar-link">
+            <i class="fa-solid fa-gauge"></i>
+            <span>My Profile</span>
           </a>
         </li>
 
@@ -129,18 +138,18 @@
           </a>
 
           <ul class="submenu">
-            <li class="submenu-item {{ Request::is('admin/users/students') ? 'active' : '' }}">
+            <li class="submenu-item {{ Request::is('admin/users/students*') ? 'active' : '' }}">
               <a href="/admin/users/students" class="submenu-link"
                 >Students</a>
             </li>
 
-            <li class="submenu-item {{ Request::is('admin/teachers') ? 'active' : '' }}">
-              <a href="/admin/teachers" class="submenu-link"
+            <li class="submenu-item {{ Request::is('admin/users/teachers*') ? 'active' : '' }}">
+              <a href="/admin/users/teachers" class="submenu-link"
                 >Teachers</a>
             </li>
 
-            <li class="submenu-item {{ Request::is('admin/administrators') ? 'active' : '' }}">
-              <a href="/admin/administrators" class="submenu-link"
+            <li class="submenu-item {{ Request::is('admin/users/administrators*') ? 'active' : '' }}">
+              <a href="/admin/users/administrators" class="submenu-link"
                 >Administrators</a>
             </li>
 
