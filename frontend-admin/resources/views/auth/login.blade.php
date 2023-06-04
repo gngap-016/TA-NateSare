@@ -54,6 +54,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
               </div>
             @endif
+            @if (session()->has('failed'))
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>{{ session('failed') }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            @endif
             <form action="/login" method="POST">
               @csrf
               <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">

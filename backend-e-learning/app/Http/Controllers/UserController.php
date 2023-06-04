@@ -179,6 +179,23 @@ class UserController extends Controller
         ]);
     }
 
+    public function changePassword(Request $request, String $parameter) {
+        $validateData = $request->validate([
+            'user_password' => 'required|min:8|max:255|confirmed',
+        ]);
+
+        $validateData['user_password'] = Hash::make($validateData['user_password']);
+
+        User::where('username', $parameter)->update([
+            'password' => $validateData['user_password']
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User password has been updated!'
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

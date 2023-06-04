@@ -5,6 +5,9 @@ use App\Http\Controllers\Dashboard\Admin\CategoryController;
 use App\Http\Controllers\Dashboard\Admin\DashboardController;
 use App\Http\Controllers\Dashboard\Admin\PostController;
 use App\Http\Controllers\Dashboard\Admin\StudentController;
+use App\Http\Controllers\Dashboard\Admin\TeacherController;
+use App\Http\Controllers\Dashboard\Admin\AdministratorController;
+use App\Http\Controllers\Dashboard\Admin\MyProfileController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +57,28 @@ Route::middleware('is_login')->group(function () {
     Route::put('/admin/users/students/reset-password/{parameter}', [StudentController::class, 'resetPassword']);
     Route::put('/admin/users/students/{parameter}', [StudentController::class, 'update']);
     Route::delete('/admin/users/students/{parameter}', [StudentController::class, 'destroy']);
+
+    Route::get('/admin/users/teachers', [TeacherController::class, 'index']);
+    Route::get('/admin/users/teachers/create', [TeacherController::class, 'create']);
+    Route::get('/admin/users/teachers/edit/{parameter}', [TeacherController::class, 'edit']);
+    Route::post('/admin/users/teachers', [TeacherController::class, 'store']);
+    Route::put('/admin/users/teachers/reset-password/{parameter}', [TeacherController::class, 'resetPassword']);
+    Route::put('/admin/users/teachers/{parameter}', [TeacherController::class, 'update']);
+    Route::delete('/admin/users/teachers/{parameter}', [TeacherController::class, 'destroy']);
+
+    Route::get('/admin/users/administrators', [AdministratorController::class, 'index']);
+    Route::get('/admin/users/administrators/create', [AdministratorController::class, 'create']);
+    Route::get('/admin/users/administrators/edit/{parameter}', [AdministratorController::class, 'edit']);
+    Route::post('/admin/users/administrators', [AdministratorController::class, 'store']);
+    Route::put('/admin/users/administrators/reset-password/{parameter}', [AdministratorController::class, 'resetPassword']);
+    Route::put('/admin/users/administrators/{parameter}', [AdministratorController::class, 'update']);
+    Route::delete('/admin/users/administrators/{parameter}', [AdministratorController::class, 'destroy']);
+
+    Route::get('/admin/my-profile', [MyProfileController::class, 'index']);
+    Route::get('/admin/my-profile/edit', [MyProfileController::class, 'edit']);
+    Route::get('/admin/my-profile/change-password', [MyProfileController::class, 'changePassword']);
+    Route::put('/admin/my-profile/{parameter}', [MyProfileController::class, 'update']);
+    Route::put('/admin/my-profile/change-password/{parameter}', [MyProfileController::class, 'updatePassword']);
 });
 
 Route::get('/check', function() {
