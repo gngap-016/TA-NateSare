@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,8 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('/materies', [HomeController::class, 'freeMateries']);
-Route::get('/materies/{parameter}', [HomeController::class, 'detailMateries']);
+Route::get('/materi/gratis', [HomeController::class, 'freeMateries']);
+Route::get('/materi/berbayar', [HomeController::class, 'paidMateries']);
+Route::get('/materi/{parameter}', [HomeController::class, 'detailMateries']);
+Route::post('/materi/{parameter}', [HomeController::class, 'commentMateries']);
+Route::get('/masuk', [AuthController::class, 'login']);

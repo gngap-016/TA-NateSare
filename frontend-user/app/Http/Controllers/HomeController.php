@@ -18,16 +18,29 @@ class HomeController extends Controller
     }
     
     public function index() {
-        return view('index');
+        $data = [
+            "title" => "Beranda",
+            "user" => "Guest",
+        ];
+
+        if(isset($_COOKIE['my_key'])) {
+            $user = json_decode($this->user);
+    
+            $data["user"] = $user->data;
+        }
+
+        return view('index', $data);
     }
 
     public function freeMateries() {
-        $response = Http::accept('application/json')->get(env('SERVER_API') . 'posts/free');
+        $materies = Http::accept('application/json')->get(env('SERVER_API') . 'posts/free');
+        $categories = Http::accept('application/json')->get(env('SERVER_API') . 'categories');
         
         $data = [
             "title" => "Materi Gratis",
             "user" => "Guest",
-            "materies" => json_decode($response)->data,
+            "materies" => json_decode($materies)->data,
+            "categories" => json_decode($categories)->data,
         ];
 
         if(isset($_COOKIE['my_key'])) {
@@ -36,16 +49,38 @@ class HomeController extends Controller
             $data["user"] = $user->data;
         }
         
-        return view('materies.free', $data);
+        return view('materies.materies', $data);
+    }
+
+    public function paidMateries() {
+        $materies = Http::accept('application/json')->get(env('SERVER_API') . 'posts/paid');
+        $categories = Http::accept('application/json')->get(env('SERVER_API') . 'categories');
+        
+        $data = [
+            "title" => "Materi Berbayar",
+            "user" => "Guest",
+            "materies" => json_decode($materies)->data,
+            "categories" => json_decode($categories)->data,
+        ];
+
+        if(isset($_COOKIE['my_key'])) {
+            $user = json_decode($this->user);
+    
+            $data["user"] = $user->data;
+        }
+        
+        return view('materies.materies', $data);
     }
 
     public function detailMateries(String $parameter) {
-        $response = Http::accept('application/json')->get(env('SERVER_API') . 'posts/' . $parameter);
+        $materies = Http::accept('application/json')->get(env('SERVER_API') . 'posts/' . $parameter);
+        $categories = Http::accept('application/json')->get(env('SERVER_API') . 'categories');
         
         $data = [
-            "title" => "Materi Gratis",
+            "title" => json_decode($materies)->data->post_title,
             "user" => "Guest",
-            "matery" => json_decode($response)->data,
+            "matery" => json_decode($materies)->data,
+            "categories" => json_decode($categories)->data,
         ];
 
         if(isset($_COOKIE['my_key'])) {
@@ -55,5 +90,21 @@ class HomeController extends Controller
         }
         
         return view('materies.detail', $data);
+    }
+
+    public function commentMateries(Request $request) {
+        $header = [
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . $_COOKIE['my_token'],
+        ];
+
+        $body = [
+            'post_slug' => $request->post_slug,
+            'comment_content' => $request->comment_content,
+        ];
+        
+        $store = Http::withHeaders($header)->post(env('SERVER_API') . 'comment', $body);
+
+        return back();
     }
 }

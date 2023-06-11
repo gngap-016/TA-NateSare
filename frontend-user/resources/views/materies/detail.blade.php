@@ -86,17 +86,20 @@
 
               <div class="reply-form">
                 <h4>Buat Diskusi Baru</h4>
-                <p>Your email address will not be published. Required fields are marked * </p>
-                <form action="" method="POST">
-                  @csrf
-                  <div class="row">
-                    <div class="col form-group">
-                      <textarea name="comment" class="form-control" placeholder="Your Comment*"></textarea>
+                @if (isset($_COOKIE['my_key']))
+                  <form action="{{ url('/materi' . '/' . $matery->post_slug) }}" method="POST">
+                    @csrf
+                    <div class="row">
+                      <div class="col form-group">
+                        <input type="hidden" name="post_slug" value="{{ $matery->post_slug }}">
+                        <textarea name="comment_content" class="form-control" placeholder="Your Comment*"></textarea>
+                      </div>
                     </div>
-                  </div>
-                  <button type="submit" class="btn btn-primary">Post Comment</button>
-
-                </form>
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                  </form>
+                @else 
+                  <p>Untuk membuat diskusi baru, Anda diharuskan masuk terlebih dahulu</p>
+                @endif
 
               </div>
 
