@@ -41,22 +41,36 @@
           </li>
         </ul>
         <!-- Pills navs -->
+
+        @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          {{ session('success') }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
+
+        @if (session()->has('failed'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          {{ session('failed') }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        @endif
       
         <!-- Pills content -->
         <div class="tab-content">
           <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-            <form>
-      
+            <form method="POST" action="{{ url('/masuk') }}">
+              @csrf
               <!-- Email input -->
               <div class="form-outline mb-4">
-                <input type="email" id="loginName" class="form-control" />
-                <label class="form-label" for="loginName">Username</label>
+                <input type="text" id="username" class="form-control" name="username" />
+                <label class="form-label" for="username">Username</label>
               </div>
       
               <!-- Password input -->
               <div class="form-outline mb-4">
-                <input type="password" id="loginPassword" class="form-control" />
-                <label class="form-label" for="loginPassword">Password</label>
+                <input type="password" id="password" class="form-control" name="password" />
+                <label class="form-label" for="password">Password</label>
               </div>
       
               <!-- Submit button -->
@@ -69,36 +83,36 @@
             </form>
           </div>
           <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-            <form>
-      
+            <form method="POST" action="{{ url('/register') }}">
+              @csrf
               <!-- Name input -->
               <div class="form-outline mb-4">
-                <input type="text" id="registerName" class="form-control" />
-                <label class="form-label" for="registerName">Name</label>
+                <input type="text" id="name" class="form-control" name="name" />
+                <label class="form-label" for="name">Name</label>
               </div>
       
               <!-- Username input -->
               <div class="form-outline mb-4">
-                <input type="text" id="registerUsername" class="form-control" />
-                <label class="form-label" for="registerUsername">Username</label>
+                <input type="text" id="username" class="form-control" name="username" />
+                <label class="form-label" for="username">Username</label>
               </div>
       
               <!-- Email input -->
               <div class="form-outline mb-4">
-                <input type="email" id="registerEmail" class="form-control" />
-                <label class="form-label" for="registerEmail">Email</label>
+                <input type="email" id="email" class="form-control" name="email" />
+                <label class="form-label" for="email">Email</label>
               </div>
       
               <!-- Password input -->
               <div class="form-outline mb-4">
-                <input type="password" id="registerPassword" class="form-control" />
-                <label class="form-label" for="registerPassword">Password</label>
+                <input type="password" id="password" class="form-control" name="password" />
+                <label class="form-label" for="password">Password</label>
               </div>
       
               <!-- Repeat Password input -->
               <div class="form-outline mb-4">
-                <input type="password" id="registerRepeatPassword" class="form-control" />
-                <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+                <input type="password" id="password_confirmation" class="form-control" name="password_confirmation" />
+                <label class="form-label" for="password_confirmation">Ulangi password</label>
               </div>
       
               <!-- Submit button -->

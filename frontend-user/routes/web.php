@@ -25,3 +25,6 @@ Route::get('/materi/berbayar', [HomeController::class, 'paidMateries']);
 Route::get('/materi/{parameter}', [HomeController::class, 'detailMateries']);
 Route::post('/materi/{parameter}', [HomeController::class, 'commentMateries']);
 Route::get('/masuk', [AuthController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout']);
+Route::post('/masuk', [AuthController::class, 'processLogin']);
+Route::post('/register', [AuthController::class, 'processRegister']);

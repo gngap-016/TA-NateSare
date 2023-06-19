@@ -39,10 +39,34 @@ class AuthController extends Controller
             setcookie('my_key', json_decode($response)->username);
 
             // return json_decode($response);
-            return redirect()->intended('/dashboard');
+            return redirect()->intended('/');
         }
 
         return back()->with('failed', 'Username atau password salah!');
+    }
+
+    public function processRegister(Request $request)
+    {
+        $validateData = $request->validate([
+            'username' => 'required|alpha:ascii|max:255',
+            'name' => 'required|max:255',
+            'email' => 'required|email:dns',
+            'password' => 'required|min:8|max:255|confirmed',
+            'password_confirmation' => 'required',
+        ]);
+
+        $response = Http::accept('application/json')->post(env('SERVER_API') . 'register', $validateData);
+
+        if($response->ok()) {
+            // return json_decode($response);
+            if(json_decode($response)->status == 'success') {
+                return back()->with('success', 'Akun anda berhasil dibuat, silahkan login!');
+            }
+            
+            return back()->with('failed', 'Akun anda gagal dibuat!');
+        }
+
+        return back()->with('failed', 'Akun anda gagal dibuat!');
     }
 
     public function logout() {
@@ -55,9 +79,9 @@ class AuthController extends Controller
             setcookie('my_token', '', time()-3600);
             setcookie('my_key', '', time()-3600);
 
-            return redirect('/')->with('success', 'Proses keluar Anda berhasil!');
+            return redirect('/masuk')->with('success', 'Proses keluar Anda berhasil!');
         }
 
-        return back()->with('failed', 'Logout Failed!');
+        return redirect('/masuk')->with('failed', 'Logout gagal!');
     }
 }

@@ -62,14 +62,18 @@ class HomeController extends Controller
             "materies" => json_decode($materies)->data,
             "categories" => json_decode($categories)->data,
         ];
-
+        
         if(isset($_COOKIE['my_key'])) {
             $user = json_decode($this->user);
     
             $data["user"] = $user->data;
+
+            if($user->data->user_paid_status == 1) {
+                return view('materies.materies', $data);
+            }
         }
-        
-        return view('materies.materies', $data);
+
+        return redirect('/');
     }
 
     public function detailMateries(String $parameter) {

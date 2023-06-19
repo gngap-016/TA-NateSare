@@ -4,7 +4,7 @@
 
       <a href="{{ url('/') }}" class="logo d-flex align-items-center">
         <img src="dist/assets/img/logo.png" alt="">
-        <span>Sinau</span>
+        <span>NateSare</span>
       </a>
 
       <nav id="navbar" class="navbar">
@@ -26,7 +26,14 @@
           </li>
           <li><a class="nav-link scrollto" href="{{ url('/kontak') }}">Kontak</a></li>
           @if (isset($_COOKIE['my_key']))
-            <li><a class="nav-link scrollto" href="#">{{ $user->user_name }}</a></li>
+            <li class="dropdown">
+              <a href="#">
+                <span>{{ $user->user_name }}</span> <i class="bi bi-chevron-down"></i>
+              </a>
+              <ul>
+                <li><a href="{{ url('/logout') }}">Logout</a></li>
+              </ul>
+            </li>
           @else
             <li><a class="getstarted scrollto" href="{{ url('/masuk') }}">Masuk</a></li>
           @endif
