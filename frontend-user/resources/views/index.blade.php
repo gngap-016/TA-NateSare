@@ -8,7 +8,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-6 d-flex flex-column justify-content-center">
-        <h1 data-aos="fade-up">Sinau: Mari belajar bersama para ahlinya</h1>
+        <h1 data-aos="fade-up">NateSare: Mari belajar bersama para ahlinya</h1>
         <h2 data-aos="fade-up" data-aos-delay="400">Metode belajar online yang menyenangkan</h2>
         <div data-aos="fade-up" data-aos-delay="600">
           <div class="text-center text-lg-start">
